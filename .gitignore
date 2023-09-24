@@ -3,6 +3,7 @@ logs/
 outputs/**/*.png
 wandb/
 .DS_Store
+.env
 *.out
 
 # Byte-compiled / optimized / DLL files
