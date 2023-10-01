@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, List
 import yaml
@@ -11,15 +11,26 @@ class IDEFICSConfig:
     """
     # ======== Generic ========
     checkpoint: str
-    torch_dtype: str = "float16"
-    device_map: str = "auto"
+    fp16: bool = False
+    bf16: bool = False
     
     # ======== Quantization ========
     load_in_4_bits: bool = True
     bnb_4bit_use_double_quant: bool = True
     bnb_4bit_quant_type: str = "nf4"
-    bnb_4bit_compute_dtype: str = "bf16"
-    llm_int8_skip_modules: List[str] = ["lm_head", "embed_tokens"]  # despite the name, for 4bit quantization
+    bnb_4bit_compute_dtype: str = "bfloat16"
+    llm_int8_skip_modules: List[str] = field(default_factory=lambda: ["lm_head", "embed_tokens"])  # despite the name, for 4bit quantization
+    
+    
+    def __post_init__(self) -> None:
+        """Set default values and run sanity checks after initialization."""
+        pass
+    
+    
+    def sanity_check(self) -> None:
+        """Run sanity checks for the IDEFICSConfig instance."""
+        assert not (self.fp16 and self.bf16), "fp16 and bf16 cannot be both enabled."
+        return
     
     
     @staticmethod
