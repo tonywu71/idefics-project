@@ -16,7 +16,7 @@ from transformers import (IdeficsForVisionText2Text,
                           BitsAndBytesConfig)
 
 from models.idefics_config import IDEFICSConfig
-from trainer.inference_config import InferenceConfig
+from models.inference_config import InferenceConfig
 from utils.constants import BAD_WORDS, EOS_TOKEN
 
 
