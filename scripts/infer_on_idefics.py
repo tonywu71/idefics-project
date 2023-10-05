@@ -20,9 +20,12 @@ from models.inference_config import InferenceConfig
 from utils.constants import BAD_WORDS, EOS_TOKEN
 
 
-def main(idefics_config_path: Path = typer.Option(..., exists=True, dir_okay=False, file_okay=True, help="Path to IDEFICSConfig."),
-         inference_config_path: Path = typer.Option(..., exists=True, dir_okay=False, file_okay=True, help="Path to InferenceConfig."),
-         prompts: List[str] = typer.Option(..., help="Prompt to use for inference. Images and text must be separated in a list format.")):
+def main(idefics_config_path: Path = typer.Option(..., exists=True, dir_okay=False, file_okay=True,
+                                                  help="Path to the IDEFICSConfig file."),
+         inference_config_path: Path = typer.Option(..., exists=True, dir_okay=False, file_okay=True,
+                                                    help="Path to the InferenceConfig file."),
+         prompts: List[str] = typer.Option(..., help="Prompt to use for inference. Images and text " + \
+                                           "must be separated in a list format.")):
     """
     Run inference on the IDEFICS model.
     """
@@ -36,10 +39,10 @@ def main(idefics_config_path: Path = typer.Option(..., exists=True, dir_okay=Fal
     print()
     
     print("IDEFICSConfig:")
-    pprint(idefics_config)  # TODO: pprint?
+    pprint(idefics_config)
     
     print("InferenceConfig:")
-    pprint(inference_config)  # TODO: pprint?
+    pprint(inference_config)
     
     print("\n-----------------------\n")
     
@@ -66,8 +69,7 @@ def main(idefics_config_path: Path = typer.Option(..., exists=True, dir_okay=Fal
                                                       quantization_config=bnb_config,
                                                       device_map="auto")
     
-    print("Model loaded with the following config:")
-    print(model.config)
+    print(f"Model loaded from `{idefics_config.checkpoint}`.")
     print("\n-----------------------\n")
     
     
