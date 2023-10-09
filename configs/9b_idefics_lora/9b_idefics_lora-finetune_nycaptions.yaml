@@ -1,8 +1,8 @@
-experiment_name: 9b_idefics_lora-finetune
+experiment_name: 9b_idefics_lora-finetune_nycaptions
 
 # ======== Training args ========
 model_dir: checkpoints
-dataset_name: pokemon_cards
+dataset_name: newyorker_caption
 train_batch_size: 2
 eval_batch_size: 2
 gradient_accumulation_steps: 8
