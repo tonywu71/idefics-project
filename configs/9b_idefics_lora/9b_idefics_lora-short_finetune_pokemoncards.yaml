@@ -9,7 +9,7 @@ gradient_accumulation_steps: 8
 gradient_checkpointing: False
 optim: paged_adamw_8bit
 learning_rate: 2e-4
-warmup_steps:
+warmup_steps: 40
 eval_steps: 40
 save_steps: 40
 logging_steps: 20

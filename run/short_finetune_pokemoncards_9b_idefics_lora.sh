@@ -9,7 +9,7 @@
 #!#############################################################
 #! sbatch directives begin here ###############################
 #! Name of the job:
-#SBATCH -J short_finetune_9b_idefics_lora
+#SBATCH -J short_finetune_pokemoncards_9b_idefics_lora
 #! Which project should be charged (NB Wilkes2 projects end in '-GPU'):
 #SBATCH -A MLMI-tw581-SL2-GPU
 #! How many whole nodes should be allocated?
@@ -53,7 +53,7 @@ echo "python `which python`": >> $LOG
 
 python scripts/finetune_idefics.py \
     --idefics-config-path configs/idefics_config-9b_vanilla.yaml \
-    --finetune-config-path configs/9b_idefics_lora/9b_idefics_lora-short_finetune.yaml \
+    --finetune-config-path configs/9b_idefics_lora/9b_idefics_lora-short_finetune_pokemoncards.yaml \
     >> $LOG 2> $ERR
 
 #! #############################################

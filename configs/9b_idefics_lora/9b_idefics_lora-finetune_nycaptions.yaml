@@ -3,16 +3,16 @@ experiment_name: 9b_idefics_lora-finetune_nycaptions
 # ======== Training args ========
 model_dir: checkpoints
 dataset_name: newyorker_caption
-train_batch_size: 2
-eval_batch_size: 2
-gradient_accumulation_steps: 8
+train_batch_size: 16
+eval_batch_size: 16
+gradient_accumulation_steps: 1
 gradient_checkpointing: False
 optim: paged_adamw_8bit
 learning_rate: 2e-4
-warmup_steps:
-eval_steps: 40
-save_steps: 40
-logging_steps: 20
+warmup_steps: 100
+eval_steps: 50
+save_steps: 50
+logging_steps: 25
 num_train_epochs: 1
 
 # ======== LoRA ========
