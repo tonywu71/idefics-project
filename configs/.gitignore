@@ -1,3 +1,0 @@
-# Temporarily exclude all configs:
-*.yaml
-!.gitignore

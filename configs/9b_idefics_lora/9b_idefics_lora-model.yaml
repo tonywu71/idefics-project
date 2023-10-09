@@ -1,0 +1,4 @@
+# ======== Testing config ========
+checkpoint:  # add checkpoint dirpath/HuggingFace Hub ID after the model fine-tuning
+bf16: True  # change to fp16 instead of bf16 to allow testing on non-Ampere GPUs
+load_in_4_bits: True
