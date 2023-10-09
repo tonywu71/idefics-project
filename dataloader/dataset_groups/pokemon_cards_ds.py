@@ -55,7 +55,7 @@ class PokemonCards(DatasetGroup):
 
     
     def load_dataset_splits(self) -> None:
-        ds = load_dataset(self.path, streaming=self.streaming, split="all")
+        ds = load_dataset(self.path, streaming=self.streaming, split="train")
         assert isinstance(ds, Dataset)  # only one split is loaded here
         
         # Split the dataset into train, validation and test sets:
