@@ -1,12 +1,12 @@
 import pytest
-from dataloader.dataset_groups.pokemon_cards_ds import PokemonCardsDataset
+from dataloader.dataset_groups.pokemon_cards_ds import PokemonCards
 
 
 @pytest.fixture
-def ds_group() -> PokemonCardsDataset:
-    return PokemonCardsDataset()
+def ds_group() -> PokemonCards:
+    return PokemonCards()
 
-def test_load_pokemon_ds(ds_group: PokemonCardsDataset):
+def test_load_pokemon_ds(ds_group: PokemonCards):
     """
     Test that the PokemonCards dataset is correctly loaded.
     """

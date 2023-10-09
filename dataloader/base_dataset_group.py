@@ -7,7 +7,8 @@ from transformers import AutoProcessor, BatchEncoding
 from transformers.models.idefics.processing_idefics import IdeficsProcessor
 from datasets import Dataset
 
-class BaseDatasetGroup(ABC):
+
+class DatasetGroup(ABC):
     """
     Base class for dataset groups.
     

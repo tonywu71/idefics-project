@@ -9,29 +9,19 @@ from dataloader.base_dataset_group import DatasetGroup
 from dataloader.image_utils import convert_to_rgb
 
 
-class PokemonCards(DatasetGroup):
+class NewYorkerCaption(DatasetGroup):
     """
-    Dataset group for the PokemonCards dataset.
-    Original dataset: `TheFusion21/PokemonCards`.
+    Dataset group for the NewYorker Caption Contest dataset.
+    Original dataset: `jmhessel/newyorker_caption_contest`.
     """
     def __init__(self,
                  processor_checkpoint: str = "HuggingFaceM4/idefics-9b",
                  streaming: bool = False,
-                 verbose: bool = False,
-                 train_size: float = 0.89,
-                 validation_size: float = 0.01,
-                 test_size: float = 0.10,
-                 seed: int = 42) -> None:
+                 verbose: bool = False) -> None:
         super().__init__(processor_checkpoint=processor_checkpoint,
                          streaming=streaming,
                          verbose=verbose)
-        self.train_size = train_size
-        self.validation_size = validation_size
-        self.test_size = test_size
-        self.seed = seed
-        
-        assert self.train_size + self.validation_size + self.test_size == 1.0, \
-            "The sum of the splits must be equal to 1."
+        self.name = "explanation"
         
         if verbose:
             print(f"Loading dataset splits from {self.path}...")
@@ -50,27 +40,16 @@ class PokemonCards(DatasetGroup):
         Return the model associated to the class.
         """
         if not hasattr(self, "_path"):
-            self._path = "tonywu71/PokemonCards_fixed"
+            self._path = "jmhessel/newyorker_caption_contest"
         return self._path
 
     
     def load_dataset_splits(self) -> None:
-        ds = load_dataset(self.path, streaming=self.streaming, split="all")
-        assert isinstance(ds, Dataset)  # only one split is loaded here
-        
-        # Split the dataset into train, validation and test sets:
-        ds = ds.train_test_split(test_size=self.test_size, shuffle=True, seed=self.seed)
-        ds_test = ds["test"]
-        ds_train_val = ds["train"].train_test_split(test_size=(1/self.test_size) * self.validation_size,
-                                                    shuffle=True,
-                                                    seed=self.seed)
-        
         self.splits = {
-            "train": ds_train_val["train"],
-            "validation": ds_train_val["test"],
-            "test": ds_test,
+            "train": load_dataset(self.path, name=self.name, streaming=self.streaming, split="train"),
+            "validation": load_dataset(self.path, name=self.name, streaming=self.streaming, split="validation"),
+            "test": load_dataset(self.path, name=self.name, streaming=self.streaming, split="test")
         }
-        
         return
     
     
@@ -93,13 +72,12 @@ class PokemonCards(DatasetGroup):
         ])
 
         prompts = []
-        for i in range(len(batch['caption'])):
-            # NOTE: We split the captions to avoid having very long examples, which would require more GPU RAM during training.
-            caption = batch['caption'][i].split(".")[0]
+        for i in range(len(batch["image_uncanny_description"])):
+            caption = batch["image_uncanny_description"][i].split(".")[0]
             prompts.append(
                 [
-                    batch['image_url'][i],
-                    f"Question: What's on the picture? Answer: This is {batch['name'][i]}. {caption}</s>",
+                    batch["image"][i],
+                    f"Question: How is this picture uncanny? Answer: {caption}"
                 ],
             )
 
