@@ -84,7 +84,7 @@ def main(idefics_config_path: Path = typer.Option(..., exists=True, dir_okay=Fal
                                     bad_words_ids=bad_words_ids,
                                     max_new_tokens=inference_config.max_new_tokens,
                                     num_beams=inference_config.num_beams)
-    # Note: `generated_ids` is the concatenation of the prompt (without the images) with the completion text.
+    # NOTE: `generated_ids` is the concatenation of the prompt (without the images) with the completion text.
     
     generated_text = processor.batch_decode(generated_ids, skip_special_tokens=True)[0]
     
