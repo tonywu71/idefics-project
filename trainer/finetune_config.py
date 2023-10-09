@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import List, Optional
 import yaml
@@ -31,13 +31,14 @@ class FinetuneConfig:
     use_lora: bool = True
     lora_rank: int = 16
     lora_alpha: int = 32
-    target_modules: List[str] = ["q_proj", "k_proj", "v_proj"]
+    target_modules: List[str] = field(default_factory=lambda: ["q_proj", "k_proj", "v_proj"])
     lora_dropout: float = 0.05
     bias: str = "none"
     
     # ======== Other training args (optional) ========
     eval_first_step: bool = True
     lr_scheduler_type: str = "linear_with_warmup"  # see possible values at https://huggingface.co/docs/transformers/v4.30.0/en/main_classes/optimizer_schedules#transformers.SchedulerType
+    max_steps: Optional[int] = None
     eval_num_beams: int = 1  # greedy search by default
     save_total_limit: Optional[int] = None
     early_stopping_patience: Optional[int] = None
@@ -60,7 +61,7 @@ class FinetuneConfig:
             config_dict = yaml.safe_load(f)
         
         # Convert types:
-        config_dict["learning_rate"] = float(config_dict["learning_rate"])  # str -> float
+        config_dict["learning_rate"] = float(config_dict["learning_rate"])  # str -> float (to handle scientific notation)
         
         try:
             config = FinetuneConfig(**config_dict)
