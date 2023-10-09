@@ -49,12 +49,12 @@ class PokemonCardsDataset(BaseDatasetGroup):
         Return the model associated to the class.
         """
         if not hasattr(self, "_path"):
-            self._path = "TheFusion21/PokemonCards"
+            self._path = "tonywu71/PokemonCards_fixed"
         return self._path
 
     
     def load_dataset_splits(self) -> None:
-        ds = load_dataset(self.path, streaming=self.streaming, split="train")
+        ds = load_dataset(self.path, streaming=self.streaming, split="all")
         assert isinstance(ds, Dataset)  # only one split is loaded here
         
         # Split the dataset into train, validation and test sets:
