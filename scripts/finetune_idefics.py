@@ -119,11 +119,13 @@ def main(idefics_config_path: Path = typer.Option(..., exists=True, dir_okay=Fal
     training_args = TrainingArguments(
         output_dir=finetune_config.model_dir,
         learning_rate=finetune_config.learning_rate,
-        per_device_train_batch_size=2,
-        per_device_eval_batch_size=2,
-        gradient_accumulation_steps=8,
-        dataloader_pin_memory=False,
-        save_total_limit=3,
+        warmup_steps=finetune_config.warmup_steps,
+        lr_scheduler_type=finetune_config.lr_scheduler_type,
+        per_device_train_batch_size=finetune_config.train_batch_size,
+        per_device_eval_batch_size=finetune_config.eval_batch_size,
+        gradient_accumulation_steps=finetune_config.gradient_accumulation_steps,
+        dataloader_pin_memory=finetune_config.dataloader_pin_memory,
+        save_total_limit=finetune_config.save_total_limit,
         evaluation_strategy="steps",
         fp16=idefics_config.fp16,
         fp16_full_eval=idefics_config.fp16,
@@ -138,7 +140,7 @@ def main(idefics_config_path: Path = typer.Option(..., exists=True, dir_okay=Fal
         label_names=["labels"],
         load_best_model_at_end=True,
         report_to="wandb",
-        optim="paged_adamw_8bit"
+        optim=finetune_config.optim
     )
 
     trainer = Trainer(

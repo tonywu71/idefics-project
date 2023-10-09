@@ -19,7 +19,6 @@ class FinetuneConfig:
     eval_batch_size: int
     gradient_accumulation_steps: int  # https://huggingface.co/docs/transformers/v4.20.1/en/perf_train_gpu_one#gradient-accumulation
     gradient_checkpointing: bool  # https://huggingface.co/docs/transformers/v4.20.1/en/perf_train_gpu_one#gradient-checkpointing
-    optim: str
     learning_rate: float
     warmup_steps: int
     eval_steps: int
@@ -37,12 +36,12 @@ class FinetuneConfig:
     
     # ======== Other training args (optional) ========
     eval_first_step: bool = True
+    optim: str = "paged_adamw_8bit"
     lr_scheduler_type: str = "linear_with_warmup"  # see possible values at https://huggingface.co/docs/transformers/v4.30.0/en/main_classes/optimizer_schedules#transformers.SchedulerType
+    dataloader_pin_memory: bool = True
     max_steps: Optional[int] = None
-    eval_num_beams: int = 1  # greedy search by default
     save_total_limit: Optional[int] = None
     early_stopping_patience: Optional[int] = None
-    save_final_model: bool = True
     
     
     def __post_init__(self) -> None:
