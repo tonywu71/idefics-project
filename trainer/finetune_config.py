@@ -37,7 +37,7 @@ class FinetuneConfig:
     # ======== Other training args (optional) ========
     eval_first_step: bool = True
     optim: str = "paged_adamw_8bit"
-    lr_scheduler_type: str = "linear_with_warmup"  # see possible values at https://huggingface.co/docs/transformers/v4.30.0/en/main_classes/optimizer_schedules#transformers.SchedulerType
+    lr_scheduler_type: str = "cosine"  # see possible values at https://huggingface.co/docs/transformers/v4.30.0/en/main_classes/optimizer_schedules#transformers.SchedulerType
     dataloader_pin_memory: bool = True
     max_steps: Optional[int] = None
     save_total_limit: Optional[int] = None
