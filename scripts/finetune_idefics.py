@@ -6,7 +6,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from dotenv import load_dotenv
 load_dotenv(verbose=True)
 
-from typing import Optional
+from typing import Optional, List
 from pathlib import Path
 from dataclasses import asdict
 from pprint import pprint
@@ -18,14 +18,15 @@ from transformers import (IdeficsForVisionText2Text,
                           TrainingArguments,
                           BitsAndBytesConfig)
 from transformers import set_seed
+from transformers.trainer_callback import TrainerCallback, EarlyStoppingCallback
 from peft.tuners.lora import LoraConfig
 from peft.mapping import get_peft_model
 
 import wandb
 
+from callbacks.eval_first_step_callback import EvalFirstStepCallback
 from dataloader.dataset_group_loader import DATASET_NAME_TO_LOAD_FUNC
 from models.idefics_config import IDEFICSConfig
-from models.inference_config import InferenceConfig
 from trainer.finetune_config import FinetuneConfig
 
 
@@ -113,6 +114,15 @@ def main(idefics_config_path: Path = typer.Option(..., exists=True, dir_okay=Fal
     # ======== Load dataset ========
     print("Loading dataset...")
     ds_group = DATASET_NAME_TO_LOAD_FUNC[finetune_config.dataset_name]()
+    
+    
+    # ======== Define callbacks ========
+    callbacks: List[TrainerCallback] = []
+    
+    if finetune_config.eval_first_step:
+        callbacks.append(EvalFirstStepCallback())
+    if finetune_config.early_stopping_patience != -1:
+        callbacks.append(EarlyStoppingCallback(early_stopping_patience=finetune_config.early_stopping_patience))
     
     
     # ======== Fine-tuning ========
