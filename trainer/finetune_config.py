@@ -40,7 +40,7 @@ class FinetuneConfig:
     lr_scheduler_type: str = "cosine"  # see possible values at https://huggingface.co/docs/transformers/v4.30.0/en/main_classes/optimizer_schedules#transformers.SchedulerType
     dataloader_pin_memory: bool = True
     max_steps: Optional[int] = None
-    save_total_limit: Optional[int] = None
+    save_total_limit: int = 3
     early_stopping_patience: Optional[int] = None
     
     

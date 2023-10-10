@@ -120,6 +120,7 @@ def main(idefics_config_path: Path = typer.Option(..., exists=True, dir_okay=Fal
         output_dir=finetune_config.model_dir,
         learning_rate=finetune_config.learning_rate,
         warmup_steps=finetune_config.warmup_steps,
+        num_train_epochs=finetune_config.num_train_epochs,
         lr_scheduler_type=finetune_config.lr_scheduler_type,
         per_device_train_batch_size=finetune_config.train_batch_size,
         per_device_eval_batch_size=finetune_config.eval_batch_size,
@@ -138,7 +139,7 @@ def main(idefics_config_path: Path = typer.Option(..., exists=True, dir_okay=Fal
         remove_unused_columns=False,
         push_to_hub=False,
         label_names=["labels"],
-        load_best_model_at_end=True,
+        load_best_model_at_end=False if finetune_config.save_total_limit == 1 else True,
         report_to="wandb",
         optim=finetune_config.optim
     )
@@ -150,17 +151,22 @@ def main(idefics_config_path: Path = typer.Option(..., exists=True, dir_okay=Fal
         eval_dataset=ds_group["validation"]
     )
 
+    
     print("\n-----------------------\n")
     print("Starting fine-tuning...")
     trainer.train()
     print("Training finished.")
     
+    
     print("\n-----------------------\n")
     print("Pushing model to HuggingFace Hub...")
-    trainer.push_to_hub()
-    print("Model pushed to HuggingFace Hub.")
-    
-    
+    try:
+        trainer.push_to_hub()
+        print("Model pushed to HuggingFace Hub.")
+    except Exception as e:
+        print(f"Error when pushing model to HuggingFace Hub: {e}")
+        print("Saving model locally instead...")
+        trainer.save_model(finetune_config.model_dir)
     print("\n-----------------------\n")
     print("Done.")
     
