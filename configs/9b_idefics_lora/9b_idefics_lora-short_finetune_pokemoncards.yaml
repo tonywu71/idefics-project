@@ -1,7 +1,7 @@
-experiment_name: 9b_idefics_lora-short_finetune
+experiment_name: 9b_idefics_lora-short_finetune_pokemoncards
 
 # ======== Training args ========
-model_dir: checkpoints
+model_dir: checkpoints/9b_idefics_lora-short_finetune_pokemoncards/
 dataset_name: pokemon_cards
 train_batch_size: 2
 eval_batch_size: 2
