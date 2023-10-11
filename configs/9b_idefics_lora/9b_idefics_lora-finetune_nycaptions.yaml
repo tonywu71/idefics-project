@@ -13,7 +13,7 @@ warmup_steps: 100
 eval_steps: 50
 save_steps: 50
 logging_steps: 25
-num_train_epochs: 3
+num_train_epochs: 5
 
 # ======== LoRA ========
 use_lora: True
