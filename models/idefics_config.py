@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, List
+from typing import List, Optional
 import yaml
 
 
@@ -13,6 +13,9 @@ class IDEFICSConfig:
     checkpoint: str
     fp16: bool = False
     bf16: bool = False
+    
+    # ======== LoRA ========
+    lora_checkpoint: Optional[str] = None
     
     # ======== Quantization ========
     load_in_4_bits: bool = True
