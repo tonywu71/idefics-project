@@ -14,6 +14,7 @@ import torch
 from transformers import (IdeficsForVisionText2Text,
                           AutoProcessor,
                           BitsAndBytesConfig)
+from peft.peft_model import PeftModel
 
 from models.idefics_config import IDEFICSConfig
 from models.inference_config import InferenceConfig
@@ -71,6 +72,17 @@ def main(idefics_config_path: Path = typer.Option(..., exists=True, dir_okay=Fal
     
     print(f"Model loaded from `{idefics_config.checkpoint}`.")
     print("\n-----------------------\n")
+    
+    
+    if idefics_config.lora_checkpoint:
+        if idefics_config.load_in_4_bits:
+            raise NotImplementedError("LoRA adapters are not supported with 4bit quantization.")
+            # NOTE: Existing workaround but very memory and storage expensive...
+            # https://github.com/artidoro/qlora/issues/29#issuecomment-1737072311
+        print(f"Loading LoRA adapters from `{idefics_config.lora_checkpoint}`...")
+        model = PeftModel.from_pretrained(model, model_id=idefics_config.lora_checkpoint)
+        model = model.merge_and_unload()
+        print("LoRA adapters loaded.")
     
     
     # ======== Inference ========
