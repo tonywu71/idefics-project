@@ -1,0 +1,27 @@
+experiment_name: 9b_idefics_lora-short_finetune_pokemoncards
+
+# ======== Training args ========
+model_dir: checkpoints/9b_idefics_lora-short_finetune_pokemoncards/
+dataset_name: pokemon_cards
+train_batch_size: 2
+eval_batch_size: 2
+gradient_accumulation_steps: 8
+gradient_checkpointing: False
+optim: paged_adamw_8bit
+learning_rate: 2e-4
+warmup_steps: 40
+eval_steps: 40
+save_steps: 40
+logging_steps: 20
+num_train_epochs: 0.005
+
+# ======== LoRA ========
+use_lora: True
+lora_rank: 16
+lora_alpha: 32
+target_modules: ["q_proj", "k_proj", "v_proj"]
+lora_dropout: 0.05
+bias: "none"
+
+# ======== Other training args ========
+# Unchanged -> see `FinetuneConfig` class for default values.

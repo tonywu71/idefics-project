@@ -1,0 +1,27 @@
+experiment_name: 9b_idefics_lora-finetune_nycaptions
+
+# ======== Training args ========
+model_dir: checkpoints/9b_idefics_lora-finetune_nycaptions/
+dataset_name: newyorker_caption
+train_batch_size: 16
+eval_batch_size: 16
+gradient_accumulation_steps: 1
+gradient_checkpointing: False
+optim: paged_adamw_8bit
+learning_rate: 5e-5
+warmup_steps: 100
+eval_steps: 50
+save_steps: 50
+logging_steps: 25
+num_train_epochs: 5
+
+# ======== LoRA ========
+use_lora: True
+lora_rank: 16
+lora_alpha: 32
+target_modules: ["q_proj", "k_proj", "v_proj"]
+lora_dropout: 0.05
+bias: "none"
+
+# ======== Other training args ========
+# Unchanged -> see `FinetuneConfig` class for default values.

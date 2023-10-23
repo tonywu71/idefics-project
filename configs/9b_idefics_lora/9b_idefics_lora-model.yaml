@@ -1,0 +1,5 @@
+# ======== Model config ========
+checkpoint: HuggingFaceM4/idefics-9b
+lora_checkpoint: tonywu71/9b_idefics_lora-finetune_nycaptions  # add checkpoint dirpath/HuggingFace Hub ID after the model fine-tuning
+bf16: True  # change to fp16 instead of bf16 to allow testing on non-Ampere GPUs
+load_in_4_bits: True
